@@ -1,38 +1,33 @@
 import { Container, HeroCard, CardList } from "./styles" 
+import { useState, useEffect } from "react"
 
 export default function Home() {
 
-  const heroes = [
-    {
-      id: 1,
-      title: 'Spider Man',
-      image_url: 'https://static1.purebreak.com.br/articles/9/98/61/9/@/392535--homem-aranha-3-multiverso-teorias-c-950x0-3.jpg'
-    },
-    {
-      id: 2,
-      title: 'Hulk',
-      image_url: 'https://static1.purebreak.com.br/articles/9/98/61/9/@/392535--homem-aranha-3-multiverso-teorias-c-950x0-3.jpg'
-    },
-    {
-      id: 3,
-      title: 'Batman',
-      image_url: 'https://static1.purebreak.com.br/articles/9/98/61/9/@/392535--homem-aranha-3-multiverso-teorias-c-950x0-3.jpg'
-    }
-  ]
+  const [heroes, setHeroes] = useState([])
+  const image_path = ""
 
-  return(
+  async function getHeroes() {
+    const response = await fetch("http://127.0.0.1:3001/api/heroes")
+    const content = await response.json()
+    setHeroes(content)
+  }
+  useEffect(() => {
+    getHeroes()
+  }, [])
+  
+  return (
     <Container>
       <h1>Heroes</h1>
       <CardList>
         {heroes.map(hero => {
           return (
             <HeroCard key={hero.id}>
-              <a href="http:google.com.br"><img src={hero.image_url} alt={hero.tile}></img></a>
+              <img src={hero.image_url} alt={hero.tile}/>
               <span>{hero.title}</span>
             </HeroCard>
           )
         })}
       </CardList>
     </Container>
-  )
+  );
 }
